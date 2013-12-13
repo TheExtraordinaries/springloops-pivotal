@@ -19,7 +19,7 @@ def pushToPivotal(springloopsData):
             return False
 
 
-    fields = ['committerName', 'commitMessage', 'committerId', 'commitURL']
+    fields = ['committerName', 'commitMessage', 'revision', 'commitURL']
     for field in fields:
         if field not in springloopsData:
             springloopsData[field] = ""
@@ -29,7 +29,7 @@ def pushToPivotal(springloopsData):
         {
             "author": springloopsData['committerName'],
             "message": springloopsData['commitMessage'],
-            "commit_id": springloopsData['committerId'],
+            "commit_id": springloopsData['revision'],
             "url": springloopsData['commitURL']
         }
     }
