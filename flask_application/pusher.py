@@ -6,10 +6,11 @@ import requests
 import re
 import json
 
-TOKEN = 'xxxxxx'
+TOKEN = 'xxxxx'
 
 def pushToPivotal(springloopsData):
     """This pushes the commit message from springloops to pivotal"""
+
 
     if "commitMessage" not in springloopsData:
         return False
@@ -17,7 +18,6 @@ def pushToPivotal(springloopsData):
         springloopsData['commitMessage'] = processCommitMessage(springloopsData['commitMessage'])
         if not springloopsData['commitMessage']:
             return False
-
 
     fields = ['committerName', 'commitMessage', 'revision', 'commitURL']
     for field in fields:
@@ -94,7 +94,22 @@ def processCommitMessage(commitMessage):
 
     commitMessage += "[" + tagString + "]"
 
+    # Step 5 - Format for HTML
+    commitMessage = escape(commitMessage)
+
     return commitMessage
+
+
+def escape(s):
+    """Taken from python's html library in 3.x escapes the html for python
+
+    Replace special characters "&", "<" and ">" to HTML-safe sequences.
+    Also translates the double quote and single quote chars, as well as
+    performs a simple nl2br operation.
+    """
+    escapeMap = {ord('&'): '&amp;', ord('<'): '&lt;', ord('>'): '&gt;',
+                    ord('"'): '&quot;', ord('\''): '&#x27;', ord('\n'): '<br> '}
+    return s.translate(escapeMap)
 
 
 def pivotalAPI(path, payload, method="POST"):
