@@ -1,0 +1,8 @@
+*.pyc
+venv/
+log/
+.DS_Store
+.settings
+.buildpath
+.project
+.pydevproject
