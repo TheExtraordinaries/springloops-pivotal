@@ -20,16 +20,8 @@ def handler404(e=None):
 
 @app.route('/newcommit', methods=['GET', 'POST'])
 def newcommit():
-    result = False
 
-    if 'payload' in request.form:
-        payload = request.form['payload']
-
-        # We must take out the print formatting before loading the json
-        unencodedData = json.loads(payload.replace('\\n',' '))
-
-        if 'commits' in unencodedData and 'commit' in unencodedData['commits']:
-            result = pusher.pushToPivotal(unencodedData['commits']['commit'])
+    result = pusher.pushToPivotal(request.form)
 
     resp = jsonify({"success": result})
     resp.status_code = 200

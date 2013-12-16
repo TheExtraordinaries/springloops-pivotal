@@ -11,6 +11,18 @@ TOKEN = 'xxxxx'
 def pushToPivotal(springloopsData):
     """This pushes the commit message from springloops to pivotal"""
 
+    if 'payload' in springloopsData:
+        payload = springloopsData['payload']
+
+        # We must take out the print formatting before loading the json
+        unencodedData = json.loads(payload.replace('\\n',' '))
+
+        if 'commits' in unencodedData and 'commit' in unencodedData['commits']:
+            springloopsData = unencodedData['commits']['commit']
+        else:
+            return False
+    else:
+        return False
 
     if "commitMessage" not in springloopsData:
         return False
@@ -92,7 +104,7 @@ def processCommitMessage(commitMessage):
 
         tagString += "#" + storyId
 
-    commitMessage += "[" + tagString + "]"
+    commitMessage += " [" + tagString + "]"
 
     # Step 5 - Format for HTML
     commitMessage = escape(commitMessage)
