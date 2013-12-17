@@ -26,10 +26,10 @@ def pushToPivotal(springloopsData):
 
     if "commitMessage" not in springloopsData:
         return False
+    elif not springloopsData['commitMessage']:
+        return False
     else:
         springloopsData['commitMessage'] = processCommitMessage(springloopsData['commitMessage'])
-        if not springloopsData['commitMessage']:
-            return False
 
     fields = ['committerName', 'commitMessage', 'revision', 'commitURL']
     for field in fields:
